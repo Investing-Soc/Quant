@@ -73,6 +73,32 @@ if __name__ == '__main__':
                 ticker TEXT PRIMARY KEY
                 )
             ''')
+    with sqlite3.connect('permanent.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS stock_details (
+                ticker TEXT PRIMARY KEY,
+                company_name TEXT,
+                sector TEXT,
+                description TEXT
+                )
+            ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS price_history (
+                ticker TEXT,
+                history_date TEXT,
+                close_price REAL,
+                PRIMARY KEY (ticker, history_date)
+                )
+            ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS price_history_monthly (
+                ticker TEXT,
+                history_date TEXT,
+                close_price REAL,
+                PRIMARY KEY (ticker, history_date)
+                )
+            ''')
 
     response = requests.get(url, headers=headers)
 
